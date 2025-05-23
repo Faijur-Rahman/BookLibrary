@@ -1,12 +1,29 @@
 package com.example.books.service;
 
 import com.example.books.entity.Book;
+import com.example.books.repository.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BookService {
 
-    public void addBook(Book book) {
+    @Autowired
+    BookRepository bookRepository;
 
+    public Book addBook(Book book) {
+        return bookRepository.save(book);
+    }
+
+    public Book getBookByName(String name) {
+        return bookRepository.findBookByBookTitle(name);
+    }
+
+    public Book updateBook(Book book) {
+        return bookRepository.save(book);
+    }
+
+    public void deleteBook(Integer id) {
+       bookRepository.deleteById(id);
     }
 }
