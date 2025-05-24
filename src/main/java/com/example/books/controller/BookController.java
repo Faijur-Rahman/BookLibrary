@@ -3,8 +3,11 @@ package com.example.books.controller;
 import com.example.books.entity.Book;
 import com.example.books.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/book/v1")
@@ -17,27 +20,32 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @PostMapping("/addbooks")
+    @PostMapping("/addBooks")
     public ResponseEntity<Book> addBook( @RequestBody Book book) {
         Book savedBook = bookService.addBook(book);
         return ResponseEntity.ok(savedBook);
     }
 
-    @GetMapping("/getbook/{bookName}")
+    @GetMapping("/getBook/{bookName}")
     public ResponseEntity<Book> getBookByName(@PathVariable("bookName") String name) {
         Book bookByName = bookService.getBookByName(name);
         return ResponseEntity.ok(bookByName);
     }
 
+    @GetMapping("/getBooks")
+    public List<Book> getAllBook() {
+        return bookService.getAllBooks();
+    }
+
     @PutMapping("/updateBook")
-    public ResponseEntity<Book> updateBook(@RequestBody Book name) {
-        Book updatedBook = bookService.updateBook(name);
-        return ResponseEntity.ok(updatedBook);
+    public ResponseEntity<String> updateBook(@RequestBody Book name) {
+        bookService.updateBook(name);
+        return new ResponseEntity<>("Book with name: " + name.getBookTitle() + " Updated successfully !!!", HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/deleteBook/{bookId}")
-    public ResponseEntity<Book> deleteBook(@PathVariable("bookId") Integer id) {
+    public ResponseEntity<String> deleteBook(@PathVariable("bookId") Integer id) {
         bookService.deleteBook(id);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>("Book with id: " +id +" Deleted successfully !!!",HttpStatus.OK);
     }
 }
