@@ -37,10 +37,11 @@ public class BookController {
         return bookService.getAllBooks();
     }
 
-    @PutMapping("/updateBook")
-    public ResponseEntity<String> updateBook(@RequestBody Book name) {
-        bookService.updateBook(name);
-        return new ResponseEntity<>("Book with name: " + name.getBookTitle() + " Updated successfully !!!", HttpStatus.ACCEPTED);
+    @PutMapping("/updateBook/{bookId}")
+    public ResponseEntity<String> updateBook(@PathVariable("bookId") Integer id,@RequestBody Book updatedBook) {
+
+        bookService.updateBookById(id,updatedBook);
+        return new ResponseEntity<>("Book with name: " + updatedBook.getBookTitle() + " Updated successfully !!!", HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/deleteBook/{bookId}")
